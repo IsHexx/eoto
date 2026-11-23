@@ -4,7 +4,8 @@ eoto Markdown Documentation Linter (ASD-STE100 & Canonical Glossary Guardrail).
 
 Checks Markdown files for:
 1. [ERROR] STE-8.1: Prohibition of semicolons (';' and '；') outside code blocks/spans.
-2. [ERROR] GLOSSARY-ALIAS: Non-canonical / prohibited term aliases (skipped on standards docs).
+2. [ERROR] GLOSSARY-ALIAS: Non-canonical / prohibited term aliases (skipped on standards docs,
+           downgraded to WARN on exploratory docs under docs/research/).
 3. [WARN]  STE-PARAGRAPH: Paragraphs exceeding 6 sentences.
 4. [WARN]  STE-LENGTH: Sentences exceeding 40 Chinese chars (or 25 English words).
 5. [WARN]  STE-VERB: Prohibited English perfect tenses or common phrasal verbs.
@@ -55,6 +56,9 @@ ZH_NOMINAL_PATTERNS: list[tuple[re.Pattern[str], str]] = [
 ]
 
 STANDARDS_EXEMPT_NAMES = {"统一术语表.md", "文档写作规范.md", "glossary.md", "ste-writing-rules.md"}
+
+# Exploratory docs may quote customers verbatim, so glossary aliases are warnings there.
+EXPLORATORY_DIR_NAMES = {"research"}
 
 
 @dataclass
@@ -112,6 +116,7 @@ def check_file(path: pathlib.Path) -> list[Issue]:
     issues: list[Issue] = []
     lines = path.read_text(encoding="utf-8").splitlines()
     is_standards_doc = path.name in STANDARDS_EXEMPT_NAMES
+    is_exploratory_doc = any(part in EXPLORATORY_DIR_NAMES for part in path.parts)
 
     in_fenced_code = False
     in_frontmatter = False
@@ -185,7 +190,7 @@ def check_file(path: pathlib.Path) -> list[Issue]:
                     issues.append(Issue(
                         path=str(path),
                         line=idx,
-                        severity="ERROR",
+                        severity="WARN" if is_exploratory_doc else "ERROR",
                         code="GLOSSARY-ALIAS",
                         message=f"Prohibited alias '{alias}' found. Use canonical term: {canonical}.",
                     ))

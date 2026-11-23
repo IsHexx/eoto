@@ -6,3 +6,4 @@
 2. **先查术语表**：编写文档前，查阅 `docs/standards/统一术语表.md`，统一使用标准术语（如 `eoto Core`、`eoto Link`、`eoto Sales`、`eoto Flow`、`eoto Cash`、`eoto Studio`、`企业微信`、`人工确认`）。
 3. **严守 ASD-STE100 规范**：遵守 `docs/standards/文档写作规范.md`。正文中绝对禁止分号（`;` 与 `；`），优先主动语态与短句，每段不超过 6 句话，高危约束必须前置命令或条件。
 4. **委托审查与自动校验**：文档定稿前，优先调用 `eoto-doc-steward` 子 Agent 审查，并运行 `python3 .agents/plugins/eoto-doc-steward/skills/eoto-ste-writing/scripts/check_docs.py` 验证通过。
+5. **文档分级**：`docs/research/` 下的探索级文档允许在引用块中保留客户原话，校验脚本将术语别名问题降级为警告。其他文档均为规范级文档。
