@@ -1,0 +1,9 @@
+{
+  "name": "eoto-doc-steward",
+  "description": "eoto 文档与术语治理插件：通过专用 Agent、写作规范技能与自动校验脚本，强制执行统一术语表与 ASD-STE100 受控写作规范。",
+  "suggestedPrompts": [
+    "让 eoto-doc-steward 审查并统一 docs/ 下的所有 Markdown 文档",
+    "将这份新文档纳入 docs/，按 eoto 术语表与 ASD-STE100 规范改写",
+    "检查文档中是否存在分号、非标准术语别名或超长句"
+  ]
+}
